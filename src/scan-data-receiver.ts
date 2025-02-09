@@ -1,18 +1,18 @@
 import { registerPlugin } from '@capacitor/core';
 
-export interface ScanDataResult { // Better name for the interface
+export interface ScanDataResult { 
   barcode: string;
-  rawData?: string; // Base64 encoded raw data
+  rawData?: string; 
 }
 
-export interface ScanDataReceiverPlugin { // Plugin interface name
+export interface ScanDataReceiverPlugin { 
   startScanning(): Promise<ScanDataResult>;
   stopScanning(): Promise<void>;
   triggerScan(options: { timeout?: number; scanType?: number }): Promise<void>;
-  // ... (Other methods)
+
 }
 
-const ScanDataReceiver = registerPlugin<ScanDataReceiverPlugin>('ScanDataReceiver', { // Match plugin name here!
+const ScanDataReceiver = registerPlugin<ScanDataReceiverPlugin>('ScanDataReceiver', { 
   web: {
     async startScanning(): Promise<ScanDataResult> {
       throw new Error('Barcode scanning is not supported on the web.');
@@ -26,4 +26,4 @@ const ScanDataReceiver = registerPlugin<ScanDataReceiverPlugin>('ScanDataReceive
   },
 });
 
-export default ScanDataReceiver; // Export with the correct name
+export default ScanDataReceiver; 
