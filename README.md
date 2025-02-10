@@ -13,25 +13,71 @@ npx cap sync
 
 <docgen-index>
 
-* [`echo(...)`](#echo)
+* [`registerScanner()`](#registerscanner)
+* [`stopScanning()`](#stopscanning)
+* [`triggerScan(...)`](#triggerscan)
+* [`addListener('scanDataReceived', ...)`](#addlistenerscandatareceived-)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### echo(...)
+### registerScanner()
 
 ```typescript
-echo(options: { value: string; }) => Promise<{ value: string; }>
+registerScanner() => Promise<void>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
+--------------------
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+### stopScanning()
+
+```typescript
+stopScanning() => Promise<void>
+```
 
 --------------------
+
+
+### triggerScan(...)
+
+```typescript
+triggerScan(options: { timeout?: number; scanType?: number; }) => Promise<void>
+```
+
+| Param         | Type                                                  |
+| ------------- | ----------------------------------------------------- |
+| **`options`** | <code>{ timeout?: number; scanType?: number; }</code> |
+
+--------------------
+
+
+### addListener('scanDataReceived', ...)
+
+```typescript
+addListener(eventName: 'scanDataReceived', listenerFunc: (result: { data: string; }) => void) => PluginListenerHandle
+```
+
+| Param              | Type                                                |
+| ------------------ | --------------------------------------------------- |
+| **`eventName`**    | <code>'scanDataReceived'</code>                     |
+| **`listenerFunc`** | <code>(result: { data: string; }) =&gt; void</code> |
+
+**Returns:** <code><a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+
+--------------------
+
+
+### Interfaces
+
+
+#### PluginListenerHandle
+
+| Prop         | Type                                      |
+| ------------ | ----------------------------------------- |
+| **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
 
 </docgen-api>

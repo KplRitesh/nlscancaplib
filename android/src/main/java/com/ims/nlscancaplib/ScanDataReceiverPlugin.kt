@@ -14,33 +14,35 @@ import com.getcapacitor.PluginMethod
 import kotlinx.coroutines.*
 import com.getcapacitor.annotation.CapacitorPlugin
 
+/**
+ * Created by Ritz Kpl on 02/09/2025.
+ */
+
 @CapacitorPlugin(name = "ScanDataReceiver")
 class ScanDataReceiverPlugin : Plugin() {
 
     private var receiver: ScanDataReceiver? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
+    private lateinit var scanDataListener: ScanDataReceiver.ScanDataListener
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @PluginMethod
-    fun startScanning(call: PluginCall) {
-        val listener = object : ScanDataReceiver.ScanDataListener { 
-            override fun onScanDataReceived(barcode: String?, rawData: ByteArray?) {
-                val ret = JSObject()
-                ret.put("barcode", barcode)
-                
-                val rawDataBase64 = rawData?.let { Base64.encodeToString(it, Base64.NO_WRAP) }
-                ret.put("rawData", rawDataBase64)
-                call.resolve(ret) 
-            }
-        }
-
+    fun registerScanner(call: PluginCall) {
         if (receiver == null) {
             receiver = ScanDataReceiver()
-            receiver?.setScanDataListener(listener)
-            val filter = IntentFilter("nlscan.action.SCANNER_RESULT") 
+
+            scanDataListener = object : ScanDataReceiver.ScanDataListener {
+                override fun onScanDataReceived(barcode: String?, rawData: ByteArray?) {
+                    Log.d("onScanDataReceived","scanned Item: $barcode")
+                    notifyListeners("scanDataReceived", JSObject().put("data", barcode))
+                }
+            }
+            receiver?.setScanDataListener(scanDataListener) 
+
+            val filter = IntentFilter("nlscan.action.SCANNER_RESULT")
             context.registerReceiver(receiver, filter)
         }
-        call.resolve() 
+        call.resolve()
     }
 
     @PluginMethod
