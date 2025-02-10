@@ -1,6 +1,6 @@
 # nlscancaplib
 
-Angular Capacitor Plugin for Newland scanner device
+Angular Capacitor Plugin for Newland MT65 scanner device
 
 ## Install
 
